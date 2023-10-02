@@ -24,30 +24,39 @@ proc drag(
 
 proc draw*(self: Main) {.slot.} =
   withDraw(self):
-    self.name.setLen(0)
-    self.name.add "main"
-    fill "#9F2B00"
-    box 0'ui, 0'ui, 400'vw, 300'vh
-    rectangle "slider":
-      var theSlider: Slider[float32]
-      slider "floatSlider", state(float32):
-        widget.valueRange = 0f..10f
-        theSlider = widget
-        connect(current, doDrag, self, Main.drag)
-      text "val":
-        setText({font: $theSlider.value}) 
-        box 10'ux, 10'ux, 400'ux, 100'ux
-        fill parseHtmlColor"#FFFFFF"
-    rectangle "slider":
-      var theSlider: Slider[int]
-      slider "intSlider", state(int):
-        widget.valueRange = 0..10
-        theSlider = widget
-        connect(current, doDrag, self, Main.drag)
-      text "val":
-        setText({font: $theSlider.value}) 
-        box 10'ux, 10'ux, 400'ux, 100'ux
-        fill parseHtmlColor"#FFFFFF"
+    size 100'pp, 100'pp
+
+    rectangle "main":
+      size 100'pp, 100'pp
+
+      setGridCols 1'fr
+      setGridRows 40'ux 40'ux
+      gridAutoRows csContentMax()
+      gridAutoFlow grRow
+      justifyContent CxCenter
+
+      rectangle "slider":
+        var theSlider: Slider[float32]
+        slider "floatSlider", state(float32):
+          widget.valueRange = 0f..10f
+          size 20'ux, 20'ux
+          theSlider = widget
+          connect(current, doDrag, self, Main.drag)
+        text "val":
+          setText({font: $theSlider.value})
+          size 100'pp, 100'pp 
+          fill parseHtmlColor"#FFFFFF"
+      rectangle "slider":
+        var theSlider: Slider[int]
+        slider "intSlider", state(int):
+          widget.valueRange = 0..10
+          theSlider = widget
+          size 100'pp, 100'pp
+          connect(current, doDrag, self, Main.drag)
+        text "val":
+          size 100'pp, 100'pp
+          setText({font: $theSlider.value})
+          fill parseHtmlColor"#FFFFFF"
 
 var main = Main.new()
 connect(main, doDraw, main, Main.draw)
